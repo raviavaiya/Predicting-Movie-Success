@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Predict Movie Success</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background-color: #f0f0f0;
+        }
+        .container {
+            max-width: 800px;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+        }
+        .header {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .form-item {
+            display: flex;
+            flex-direction: column;
+        }
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+        }
+        input, select, button {
+            padding: 10px;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            font-size: 1rem;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>Predict Movie Success</h1>
+            <p>Fill in the details below to predict the movie's success.</p>
+        </div>
+        <form id="movieForm">
+            <div class="grid-container">
+                <div class="form-item">
+                    <label for="movieName">Movie Name</label>
+                    <input type="text" id="movieName" placeholder="Enter movie name">
+                </div>
+                <div class="form-item">
+                    <label for="budget">Budget ($M)</label>
+                    <input type="number" id="budget" placeholder="Enter budget">
+                </div>
+                <div class="form-item">
+                    <label for="genre">Genre</label>
+                    <select id="genre">
+                        <option value="action">Action</option>
+                        <option value="comedy">Comedy</option>
+                        <option value="drama">Drama</option>
+                        <option value="thriller">Thriller</option>
+                        <option value="sci-fi">Sci-Fi</option>
+                    </select>
+                </div>
+                <div class="form-item">
+                    <label for="releaseDate">Release Date</label>
+                    <input type="date" id="releaseDate">
+                </div>
+                <div class="form-item">
+                    <label for="starPower">Star Power (1-10)</label>
+                    <input type="number" id="starPower" min="1" max="10" placeholder="Enter star power">
+                </div>
+                <div class="form-item">
+                    <label for="socialMediaHype">Social Media Hype (1-10)</label>
+                    <input type="number" id="socialMediaHype" min="1" max="10" placeholder="Enter social media hype">
+                </div>
+            </div>
+            <div style="margin-top: 20px; text-align: center;">
+                <button type="button" onclick="predictSuccess()">Predict Success</button>
+            </div>
+        </form>
+        <div id="result" style="margin-top: 20px; text-align: center; font-size: 1.2rem; color: #333;"></div>
+    </div>
+
+    <script>
+        function predictSuccess() {
+            const movieName = document.getElementById('movieName').value;
+            const budget = parseFloat(document.getElementById('budget').value);
+            const genre = document.getElementById('genre').value;
+            const releaseDate = document.getElementById('releaseDate').value;
+            const starPower = parseInt(document.getElementById('starPower').value, 10);
+            const socialMediaHype = parseInt(document.getElementById('socialMediaHype').value, 10);
+
+            // Basic validation
+            if (!movieName || !budget || !genre || !releaseDate || !starPower || !socialMediaHype) {
+                document.getElementById('result').textContent = 'Please fill out all fields.';
+                return;
+            }
+
+            // Mock prediction logic
+            const score = budget * 0.1 + starPower * 1.5 + socialMediaHype * 2;
+            const success = score > 50 ? 'likely to succeed' : 'less likely to succeed';
+
+            document.getElementById('result').textContent = `The movie "${movieName}" is ${success}!`;
+        }
+    </script>
+</body>
+</html>
