@@ -103,12 +103,11 @@
                 
             </div>
         </form>
-
-        <!-- Result container (hidden initially) -->
-        <div id="resultContainer" class="result-container">
-            <h1 id="predictionResult"></h1>
-            <button class="btn btn-secondary" onclick="resetForm()">Try Again</button>
+        <div class="result-container" id="result-container">
+            <h2 id="prediction-result"></h2>
         </div>
+        
+        
     </div>
 
     <!-- Bootstrap JS and dependencies -->
@@ -117,39 +116,33 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
 
     <script>
-       document.getElementById('predictionForm').addEventListener('submit', function(event) {
-    event.preventDefault();  // Prevent form from refreshing the page
-
-    // Create a new FormData object from the form
-    const formData = new FormData(this);
-
-    // Send the form data to the Flask backend via AJAX
-    fetch('/predict', {
-        method: 'POST',
-        body: formData,
-    })
-    .then(response => response.json())
-    .then(data => {
-        if (data.error) {
-            alert('Error: ' + data.error);
-        } else {
-            // Display the result in the result container
-            document.getElementById('predictionResult').textContent = "Prediction: " + data.prediction;
-            document.getElementById('resultContainer').style.display = 'block';  // Show the result container
-            window.scrollTo(0, document.body.scrollHeight);  // Scroll to the result container
-        }
-    })
-    .catch(error => {
-        alert('Error: ' + error.message);
-    });
-});
-
-
-        // Reset the form and hide result
-        function resetForm() {
-            document.getElementById('predictionForm').reset();
-            document.getElementById('resultContainer').style.display = 'none';  // Hide the result container
-        }
+        document.getElementById('predictionForm').addEventListener('submit', function(e) {
+            e.preventDefault(); // Prevent form from refreshing the page
+    
+            const formData = new FormData(this);
+    
+            fetch('/predict', {
+                method: 'POST',
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Display the prediction
+                    const resultContainer = document.getElementById('result-container');
+                    const resultText = document.getElementById('prediction-result');
+                    resultText.textContent = `Predicted Success Score: ${data.prediction}`;
+                    resultContainer.style.display = 'block';
+                } else {
+                    alert(`Error: ${data.error}`);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while predicting.');
+            });
+        });
     </script>
+    
 </body>
 </html>
